@@ -21,7 +21,7 @@ function App() {
     setLoading(true);
     setError(null);
 
-    fetch('http://localhost:5000/api/location')
+    fetch('https://weatherapp-fxmd.onrender.com')
       .then(res => res.json())
       .then(data => {
         console.log('IP alapú válasz:', data);
