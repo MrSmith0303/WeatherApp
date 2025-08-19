@@ -54,13 +54,6 @@ npm start
 - **API**: WeatherAPI.com, OpenWeatherMap
 - **Térkép**: OpenWeatherMap tiles
 
-## Színséma
-
-Az alkalmazás a "méregzöld" (poison green) színsémát használja:
-- Fő szín: `#4ade80`
-- Kártya háttér: `#22c55e`
-- Gradiens átmenetek a háttérben
-
 ## Fejlesztői megjegyzések
 
 - Az alkalmazás automatikusan lekéri az előrejelzést, amikor egy város időjárását lekérdezed
