@@ -16,7 +16,6 @@ app.get('/api/location', async (req, res) => {
   } else if (city) {
     query = city;
   } else {
-    // IP alapú helymeghatározás - ha nincs megadva semmi
     query = 'auto:ip';
   }
 
@@ -42,7 +41,6 @@ app.get('/api/location', async (req, res) => {
   }
 });
 
-// Új: OpenWeatherMap tile proxy endpoint
 app.get('/api/tiles/:layer/:z/:x/:y.png', async (req, res) => {
   const { layer, z, x, y } = req.params;
 
@@ -59,7 +57,6 @@ app.get('/api/tiles/:layer/:z/:x/:y.png', async (req, res) => {
   }
 });
 
-// Előrejelzés API végpont (OpenWeather - több napos)
 app.get('/api/forecast', async (req, res) => {
   const { city, days } = req.query;
   
@@ -67,7 +64,6 @@ app.get('/api/forecast', async (req, res) => {
     return res.status(400).json({ error: 'Város megadása kötelező!' });
   }
 
-  // 1) Geokódolás város → (lat, lon)
   const geoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${openWeatherMapKey}`;
 
   try {
@@ -83,7 +79,6 @@ app.get('/api/forecast', async (req, res) => {
 
     const { lat, lon } = geoData[0];
 
-    // Próbáljuk a One Call API-t – ha nem elérhető a kulcsodnál, visszaesünk a 5 napos / 3 órás előrejelzésre
     const oneCallUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts,current&units=metric&lang=hu&appid=${openWeatherMapKey}`;
     const oneCallResponse = await fetch(oneCallUrl);
     let dailyForecast;
@@ -117,7 +112,6 @@ app.get('/api/forecast', async (req, res) => {
       }
     }
 
-    // Ha a One Call nem használható, használjuk a 5 napos / 3 órás előrejelzést és napi összesítést készítünk
     if (!dailyForecast) {
       const forecast5Url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=hu&appid=${openWeatherMapKey}`;
       const forecast5Response = await fetch(forecast5Url);
@@ -127,7 +121,6 @@ app.get('/api/forecast', async (req, res) => {
       const forecast5Data = await forecast5Response.json();
       const timezoneOffsetSec = forecast5Data?.city?.timezone || 0;
 
-      // Csoportosítás helyi napokra (város időzónája szerint)
       const byDate = {};
       for (const item of forecast5Data.list || []) {
         const localDate = new Date((item.dt + timezoneOffsetSec) * 1000);
@@ -139,7 +132,6 @@ app.get('/api/forecast', async (req, res) => {
         byDate[dateKey].push(item);
       }
 
-      // Mai nap kulcsának meghatározása a város időzónájában
       const nowLocal = new Date((Math.floor(Date.now() / 1000) + timezoneOffsetSec) * 1000);
       const todayKey = `${nowLocal.getUTCFullYear()}-${String(nowLocal.getUTCMonth() + 1).padStart(2, '0')}-${String(nowLocal.getUTCDate()).padStart(2, '0')}`;
 
@@ -182,7 +174,6 @@ app.get('/api/forecast', async (req, res) => {
       });
     }
 
-    // UV index kiegészítése Open-Meteo API-val, ha hiányzik
     try {
       const uvUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max&timezone=auto`;
       const uvResp = await fetch(uvUrl);
@@ -203,8 +194,6 @@ app.get('/api/forecast', async (req, res) => {
       // ignore
     }
 
-    // Pollen logika eltávolítva kérésre
-
     res.json({ daily: dailyForecast });
   } catch (err) {
     console.error('Előrejelzés hiba (OpenWeather):', err);
@@ -212,7 +201,6 @@ app.get('/api/forecast', async (req, res) => {
   }
 });
 
-// Óránkénti előrejelzés (OpenWeather)
 app.get('/api/hourly', async (req, res) => {
   const { city, hours } = req.query;
   if (!city) {
@@ -221,7 +209,6 @@ app.get('/api/hourly', async (req, res) => {
 
   const requestedHours = Math.max(1, Math.min(parseInt(hours || '24', 10), 48));
 
-  // Geokódolás
   const geoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${openWeatherMapKey}`;
   try {
     const geoResponse = await fetch(geoUrl);
@@ -234,7 +221,6 @@ app.get('/api/hourly', async (req, res) => {
     }
     const { lat, lon } = geoData[0];
 
-    // Első próbálkozás: One Call hourly
     const oneCallUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily,alerts,current&units=metric&lang=hu&appid=${openWeatherMapKey}`;
     const oneCallResp = await fetch(oneCallUrl);
     let hourly = [];
@@ -266,7 +252,6 @@ app.get('/api/hourly', async (req, res) => {
       }
     }
 
-    // Fallback: 5 napos / 3 órás
     if (!hourly.length) {
       const forecast5Url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=hu&appid=${openWeatherMapKey}`;
       const fResp = await fetch(forecast5Url);
@@ -298,7 +283,6 @@ app.get('/api/hourly', async (req, res) => {
       }).slice(0, requestedHours);
     }
 
-    // UV fallback Open-Meteo óránkénti – timezone=auto, kulcs: YYYY-MM-DD HH:MM
     try {
       const uniqDates = Array.from(new Set(hourly.map(h => h.date))).sort();
       if (uniqDates.length) {
@@ -313,7 +297,6 @@ app.get('/api/hourly', async (req, res) => {
             map[times[i]] = vals[i];
           }
           hourly = hourly.map(h => {
-            // összeállítjuk az Open-Meteo formátumú kulcsot: 'YYYY-MM-DDTHH:00'
             const key = `${h.date}T${h.hour}`;
             const v = map[key];
             return {

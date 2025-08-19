@@ -10,7 +10,6 @@ const RadarMap = () => {
 
   return (
     <div style={{ position: "relative" }}>
-      {/* Esztétikus és reszponzív gombpanel */}
       <div className="radar-controls">
         <button
           onClick={() => setActiveLayer("clouds_new")}

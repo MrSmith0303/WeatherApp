@@ -62,12 +62,12 @@ body{
 
 @media (max-width: 768px) {
   .search-bar {
-    max-width: 90%; /* Kisebb képernyőn a 90% szélesség jobban kitölti a teret */
-    padding-top: 20px; /* Kisebb felső térköz, hogy a keresőmező ne legyen annyira lent */
+    max-width: 90%; 
+    padding-top: 20px; 
   }
 
   .search-bar .btn {
-    padding: 8px 16px; /* Kisebb gomb a mobil nézethez */
+    padding: 8px 16px; 
   }
 }
 
@@ -117,12 +117,9 @@ body{
 }
 
 .radar-map-container {
-  /* Itt vannak a konténer további stílusai */
   position: relative;
   overflow: hidden;
-  height: 900px; /* vagy amekkora a térkép magassága */
-  
-  /* A maszkolás */
+  height: 900px; 
   mask-image:
     linear-gradient(to bottom, transparent 0%, black 2%, black 98%, transparent 100%),
     linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
@@ -134,7 +131,6 @@ body{
 }
 
 .radar-map {
-  /* A radartérkép stílusai */
   width: 100%;
   height: 100%;
 }
@@ -196,11 +192,10 @@ body{
   padding:20px;
 }
 
-/* A kártyákat tartalmazó flexbox konténer */
 .forecast-cards-wrapper {
   display: flex;
-  gap: 15px; /* Távolság a kártyák között */
-  flex-wrap: wrap; /* Hogy mobil nézetben is jól működjön */
+  gap: 15px; 
+  flex-wrap: wrap; 
   justify-content: flex-start;
 }
 .forecast-container{
@@ -208,11 +203,11 @@ body{
   padding-top: 40px;
   padding-bottom: 40px;
 }
-/* A kártyák alap stílusa */
+
 .forecast-card {
   background-color: #aaaaaa;
-  width: 130px; /* Vagy amilyen széleset szeretnél */
-  height: 300px; /* Vagy amilyen magasat szeretnél */
+  width: 130px; 
+  height: 300px; 
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -223,13 +218,12 @@ body{
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Kártya lebegéskor */
 .forecast-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Tartalom stílusai a kártyákon belül */
+
 .forecast-card h3 {
   font-size: 1.5em;
   margin: 0;
@@ -237,7 +231,7 @@ body{
 }
 
 .forecast-card img {
-  width: 60px; /* Az ikon mérete */
+  width: 60px; 
   margin: 10px 0;
 }
 
