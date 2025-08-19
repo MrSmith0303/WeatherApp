@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# Weather App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Egy modern időjárás alkalmazás, amely valós adatokat jelenít meg az aktuális időjárásról és 4 napos előrejelzésről.
 
-## Available Scripts
+## Funkciók
 
-In the project directory, you can run:
+- **Aktuális időjárás**: Valós időjárás adatok bármely városra
+- **2 napos előrejelzés**: Részletes előrejelzés a következő 2 napra (free tier korlátozás)
+- **Automatikus helymeghatározás**: IP alapú helymeghatározás
+- **Város keresés**: Keresés város neve alapján
+- **Időjárás radar**: Interaktív térkép az időjárási viszonyokról
+- **Poison green színséma**: Modern, kellemes design
 
-### `npm start`
+## Telepítés
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Klónozd le a repository-t:
+```bash
+git clone <repository-url>
+cd weatherapp
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. Telepítsd a függőségeket:
+```bash
+npm install
+```
 
-### `npm test`
+3. Indítsd el a szervert:
+```bash
+node server.js
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+4. Egy új terminálban indítsd el a React alkalmazást:
+```bash
+npm start
+```
 
-### `npm run build`
+## Használat
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Aktuális időjárás**: Az alkalmazás automatikusan betölti az aktuális helyed időjárását
+2. **Város keresés**: Írd be a város nevét a keresőmezőbe és nyomd meg az Enter gombot
+3. **Előrejelzés**: Miután kiválasztottál egy várost, automatikusan megjelenik a 4 napos előrejelzés
+4. **Radar térkép**: Az alsó részen megtalálható az interaktív időjárás radar
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## API Végpontok
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `GET /api/location` - Aktuális időjárás lekérése
+- `GET /api/forecast` - 4 napos előrejelzés lekérése
+- `GET /api/tiles/:layer/:z/:x/:y.png` - Időjárás térkép tile-ok
 
-### `npm run eject`
+## Technológiai stack
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Frontend**: React.js, Bootstrap CSS
+- **Backend**: Node.js, Express.js
+- **API**: WeatherAPI.com, OpenWeatherMap
+- **Térkép**: OpenWeatherMap tiles
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Színséma
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Az alkalmazás a "méregzöld" (poison green) színsémát használja:
+- Fő szín: `#4ade80`
+- Kártya háttér: `#22c55e`
+- Gradiens átmenetek a háttérben
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Fejlesztői megjegyzések
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Az alkalmazás automatikusan lekéri az előrejelzést, amikor egy város időjárását lekérdezed
+- A statikus előrejelzés kártyák helyett most valós adatok jelennek meg
+- A szerver automatikusan kezeli a hibákat és a betöltési állapotokat
+- Reszponzív design mobil és asztali eszközökre
