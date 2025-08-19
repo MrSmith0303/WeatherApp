@@ -13,11 +13,34 @@
 
 # misc
 .DS_Store
+.eslintcache
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.idea/
+.vscode/
+.history/
+.cache/
+
+# env files (keep an example committed if needed)
+.env
+.env.*
+!.env.example
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+logs
+*.log
+
+# build artifacts / caches
+/coverage
+/dist
+.nyc_output
+.npm
