@@ -5,6 +5,8 @@ import RadarMap from './RadarMap';
 
 function App() {
 
+  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
   const [hourlyData, setHourlyData] = useState(null);
@@ -21,7 +23,7 @@ function App() {
     setLoading(true);
     setError(null);
 
-    fetch('http://localhost:5000/api/location')
+    fetch(`${API_BASE}/api/location`)
       .then(res => res.json())
       .then(data => {
         console.log('IP alapú válasz:', data);
@@ -47,7 +49,7 @@ function App() {
   useEffect(() => {
     if (userLocation) {
       setLoading(true);
-      fetch(`http://localhost:5000/api/location?lat=${userLocation.lat}&lng=${userLocation.lng}`)
+      fetch(`${API_BASE}/api/location?lat=${userLocation.lat}&lng=${userLocation.lng}`)
         .then(res => res.json())
         .then(data => {
           if (data.error) {
@@ -74,11 +76,11 @@ function App() {
     let url;
 
     if (city) {
-      url = `http://localhost:5000/api/location?city=${encodeURIComponent(city)}`;
+      url = `${API_BASE}/api/location?city=${encodeURIComponent(city)}`;
     } else if (lat && lng) {
-      url = `http://localhost:5000/api/location?lat=${lat}&lng=${lng}`;
+      url = `${API_BASE}/api/location?lat=${lat}&lng=${lng}`;
     } else {
-      url = `http://localhost:5000/api/location`; // IP alapú helymeghatározás
+      url = `${API_BASE}/api/location`; // IP alapú helymeghatározás
     }
 
     // Lekérjük az aktuális időjárást
@@ -109,7 +111,7 @@ function App() {
   const fetchForecastData = (city) => {
     console.log('Előrejelzés lekérése városra:', city);
     setForecastLoading(true);
-    const url = `http://localhost:5000/api/forecast?city=${encodeURIComponent(city)}`;
+    const url = `${API_BASE}/api/forecast?city=${encodeURIComponent(city)}`;
 
     fetch(url)
       .then(res => {
@@ -134,7 +136,7 @@ function App() {
   const fetchHourlyData = (city) => {
     if (!city) return;
     setHourlyLoading(true);
-    const url = `http://localhost:5000/api/hourly?city=${encodeURIComponent(city)}&hours=24`;
+    const url = `${API_BASE}/api/hourly?city=${encodeURIComponent(city)}&hours=24`;
     fetch(url)
       .then(res => {
         if (!res.ok) {

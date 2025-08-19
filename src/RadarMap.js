@@ -6,6 +6,7 @@ const RadarMap = () => {
   const mapCenter = [47.4979, 19.0402];
   const mapZoom = 8;
   const [activeLayer, setActiveLayer] = useState("clouds_new");
+  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
 
 
   return (
@@ -58,7 +59,7 @@ const RadarMap = () => {
 
         {/* Időjárási réteg */}
         <TileLayer
-          url={`http://localhost:5000/api/tiles/${activeLayer}/{z}/{x}/{y}.png`}
+          url={`${API_BASE}/api/tiles/${activeLayer}/{z}/{x}/{y}.png`}
           attribution='&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>'
           opacity={0.7}
         />
